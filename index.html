@@ -102,7 +102,7 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <p class="eyebrow"><span class="sun"></span>Hilde Grandkids · 2026</p>
+    <p class="eyebrow"><span class="sun"></span> Belcher Family · 2026</p>
     <h1>Summer Reading <em>Challenge</em></h1>
     <p class="tagline">Every book finished becomes a spine on the shelf. Log them all summer and watch each reader's shelf fill up.</p>
     <div class="setup" id="setup"></div>
@@ -216,7 +216,9 @@ async function loadAll(){
     books   = bSnap.docs.map(d=>({id:d.id, ...d.data()}));
   }catch(e){
     console.error(e);
-    alert("Couldn't reach Firestore. Check your firebaseConfig and that the database + rules are set up.");
+    const box=$("setup");
+    box.classList.add("show");
+    box.innerHTML='<b>Firestore error</b><br>code: <code>'+escapeHtml(e.code||"(none)")+'</code><br>'+escapeHtml(e.message||String(e));
   }
 }
 
