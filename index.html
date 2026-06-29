@@ -31,6 +31,7 @@
   h1{font-family:"Fraunces",Georgia,serif;font-weight:800;font-optical-sizing:auto;font-size:clamp(2.1rem,7vw,3.4rem);line-height:1.02;letter-spacing:-.01em;margin:0}
   h1 em{font-style:italic;font-weight:500;color:var(--coral)}
   .tagline{color:var(--ink-soft);font-size:1.02rem;margin:8px 0 0;max-width:46ch}
+  .updated{display:inline-block;font-size:.8rem;font-weight:800;color:#8b94a3;letter-spacing:.02em;white-space:nowrap;cursor:help}
   .setup{margin:18px 0 0;padding:18px 20px;border-radius:14px;background:#FFF4D9;border:1px solid #F1D78C;color:#6b5418;font-size:.95rem;display:none}
   .setup.show{display:block}
   .setup b{color:#5a4612}
@@ -56,7 +57,8 @@
   .shelf-label{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
   .shelf{display:flex;align-items:flex-end;gap:5px;min-height:178px;padding:14px 16px 0;overflow-x:auto;overflow-y:hidden;background:linear-gradient(#f7efe0,#f3e9d6);border-radius:12px 12px 6px 6px;border:1px solid var(--line);border-bottom:none;scrollbar-width:thin}
   .board{height:14px;border-radius:0 0 8px 8px;background:linear-gradient(var(--wood),var(--wood-dk));box-shadow:inset 0 2px 0 rgba(255,255,255,.18),0 8px 14px -10px rgba(140,95,57,.9)}
-  .spine{flex:0 0 auto;width:26px;border-radius:4px 4px 2px 2px;background:var(--c,#888);color:#fff;cursor:default;position:relative;box-shadow:inset -3px 0 0 rgba(0,0,0,.12),inset 3px 0 0 rgba(255,255,255,.16);display:flex;align-items:flex-start;justify-content:center;padding-top:8px;transition:transform .12s}
+  .spine{flex:0 0 auto;width:26px;border-radius:4px 4px 2px 2px;background:var(--c,#888);color:#fff;cursor:pointer;position:relative;box-shadow:inset -3px 0 0 rgba(0,0,0,.12),inset 3px 0 0 rgba(255,255,255,.16);display:flex;align-items:flex-start;justify-content:center;padding-top:8px;transition:transform .12s}
+  .spine:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
   .spine:hover{transform:translateY(-4px)}
   .spine span{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:.62rem;font-weight:700;line-height:1;letter-spacing:.02em;max-height:calc(100% - 14px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.95}
   .shelf-empty{color:var(--ink-soft);font-style:italic;align-self:center;padding:0 4px}
@@ -90,6 +92,26 @@
   .icon-btn.edit:hover{color:var(--sky);background:#EAF4F7}
   .empty-log{color:var(--ink-soft);font-style:italic;padding:18px 4px}
   footer{margin-top:34px;text-align:center;color:var(--ink-soft);font-size:.82rem}
+
+  /* book details modal */
+  .modal-overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(35,49,74,.45);backdrop-filter:blur(2px)}
+  .modal-overlay[hidden]{display:none}
+  .modal-card{position:relative;width:100%;max-width:360px;background:var(--card);border-radius:20px;padding:26px 24px 22px;box-shadow:0 30px 70px -25px rgba(35,49,74,.7);border-top:6px solid var(--accent,var(--sky));animation:rise .28s cubic-bezier(.2,.9,.2,1)}
+  @keyframes rise{from{transform:translateY(14px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+  .modal-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border:none;background:transparent;color:var(--ink-soft);font-size:1.6rem;line-height:1;cursor:pointer;border-radius:10px}
+  .modal-x:hover{background:#f3ece0;color:var(--ink)}
+  .m-badge{display:inline-block;font-family:"Fraunces",serif;font-weight:800;font-size:.85rem;color:#fff;background:var(--accent,var(--sky));padding:3px 11px;border-radius:999px;margin-bottom:10px}
+  .m-title{font-family:"Fraunces",serif;font-weight:800;font-size:1.5rem;line-height:1.12;margin:0;color:var(--ink)}
+  .m-author{color:var(--ink-soft);font-size:1rem;margin:5px 0 0}
+  .m-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 4px}
+  .m-cell{background:#FBF6EC;border:1px solid var(--line);border-radius:12px;padding:11px 12px;text-align:center}
+  .m-n{font-family:"Fraunces",serif;font-weight:800;font-size:1.35rem;color:var(--accent,var(--sky));line-height:1}
+  .m-l{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-top:5px}
+  .m-actions{display:flex;gap:10px;margin-top:20px}
+  .m-actions button{flex:1;appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;padding:11px;border-radius:11px}
+  .m-edit{color:#fff;background:var(--accent,var(--sky))}
+  .m-del{color:var(--coral);background:#FBEDEC}
+  .m-del:hover{background:#f7dedc}
   @media (max-width:560px){
     .stats{grid-template-columns:repeat(3,1fr);gap:8px}
     .grid{grid-template-columns:1fr}
@@ -104,7 +126,7 @@
   <header class="top">
     <p class="eyebrow"><span class="sun"></span> Hilde Grandkids · 2026</p>
     <h1>Summer Reading <em>Challenge</em></h1>
-    <p class="tagline">Every book finished becomes a spine on the shelf. Log them all summer and watch each reader's shelf fill up.</p>
+    <p class="tagline">Every book finished becomes a spine on the shelf. Log them all summer and watch each reader's shelf fill up. <span class="updated" id="lastEdit"></span></p>
     <div class="setup" id="setup"></div>
   </header>
 
@@ -128,8 +150,8 @@
     <div class="form">
       <h2 id="formTitle">Add a book</h2>
       <div class="grid">
-        <div class="field full"><label for="fTitle">Title</label><input id="fTitle" placeholder="The One and Only Ivan" autocomplete="off" /></div>
-        <div class="field"><label for="fAuthor">Author</label><input id="fAuthor" placeholder="Katherine Applegate" autocomplete="off" /></div>
+        <div class="field full"><label for="fTitle">Title</label><input id="fTitle" placeholder="The One and Only Ivan" autocomplete="off" autocapitalize="words" /></div>
+        <div class="field"><label for="fAuthor">Author</label><input id="fAuthor" placeholder="Katherine Applegate" autocomplete="off" autocapitalize="words" /></div>
         <div class="field"><label for="fPages"># Pages</label><input id="fPages" type="number" min="1" inputmode="numeric" placeholder="320" /></div>
         <div class="field"><label for="fDate">Date completed</label><input id="fDate" type="date" /></div>
         <div class="field"><label for="fNum">Book #</label><input id="fNum" type="number" min="1" inputmode="numeric" /></div>
@@ -152,6 +174,23 @@
   </section>
 
   <footer>Made with love for the grandkids · data saved for every parent to see</footer>
+</div>
+
+<div class="modal-overlay" id="bookModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="modal-x" id="mClose" aria-label="Close">&times;</button>
+    <div class="m-badge" id="mBadge">#1</div>
+    <h3 class="m-title" id="mTitle">Title</h3>
+    <p class="m-author" id="mAuthor">Author</p>
+    <div class="m-meta">
+      <div class="m-cell"><div class="m-n" id="mPages">—</div><div class="m-l">Pages</div></div>
+      <div class="m-cell"><div class="m-n" id="mDate">—</div><div class="m-l">Finished</div></div>
+    </div>
+    <div class="m-actions">
+      <button class="m-edit" id="mEdit">Edit</button>
+      <button class="m-del" id="mDel">Remove</button>
+    </div>
+  </div>
 </div>
 
 <script type="module">
@@ -179,13 +218,13 @@ const READER_COLORS = ["#2E8FB0","#E8615A","#5BA682","#9B6FB0","#E59B3B","#D9637
    2.  APP
    ========================================================================== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc }
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc, setDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const $ = (id) => document.getElementById(id);
 const configured = !firebaseConfig.apiKey.includes("YOUR_API_KEY");
 
-let db = null, readers = [], books = [], activeReader = null, editingId = null, justAdded = null;
+let db = null, readers = [], books = [], activeReader = null, editingId = null, justAdded = null, lastEdited = null;
 const colorFor = (i) => READER_COLORS[i % READER_COLORS.length];
 
 if(!configured){
@@ -204,16 +243,21 @@ async function init(){
   await loadAll();
   if(readers.length) activeReader = readers[0].id;
   render();
+  renderStamp();
 }
 
 async function loadAll(){
   try{
-    const [rSnap,bSnap] = await Promise.all([
+    const [rSnap,bSnap,mSnap] = await Promise.all([
       getDocs(collection(db,"readers")),
-      getDocs(collection(db,"books"))
+      getDocs(collection(db,"books")),
+      getDoc(doc(db,"meta","activity"))
     ]);
     readers = rSnap.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=>(a.created_at||0)-(b.created_at||0));
     books   = bSnap.docs.map(d=>({id:d.id, ...d.data()}));
+    const metaTs = mSnap.exists() ? (mSnap.data().last_edited||0) : 0;
+    const maxCreated = Math.max(0, ...books.map(b=>b.created_at||0), ...readers.map(r=>r.created_at||0));
+    lastEdited = Math.max(metaTs, maxCreated) || null;
   }catch(e){
     console.error(e);
     const box=$("setup");
@@ -223,24 +267,24 @@ async function loadAll(){
 }
 
 async function addReader(){
-  const name = (prompt("Reader's name?")||"").trim();
+  const name = capWords((prompt("Reader's name?")||"").trim());
   if(!name) return;
   try{
     const data = {name, created_at: Date.now()};
     const ref = await addDoc(collection(db,"readers"), data);
     readers.push({id:ref.id, ...data});
-    activeReader = ref.id; render();
+    activeReader = ref.id; touchActivity(); render();
   }catch(e){ console.error(e); alert("Could not add reader."); }
 }
 
 async function saveBook(){
   if(!activeReader){ alert("Add a reader first."); return; }
-  const title = $("fTitle").value.trim();
+  const title = capWords($("fTitle").value.trim());
   if(!title){ $("fTitle").focus(); return; }
   const payload = {
     reader_id: activeReader,
     title,
-    author: $("fAuthor").value.trim() || null,
+    author: capWords($("fAuthor").value.trim()) || null,
     pages: parseInt($("fPages").value,10) || null,
     date_completed: $("fDate").value || null,
     book_number: parseInt($("fNum").value,10) || null
@@ -255,6 +299,7 @@ async function saveBook(){
       books.push({id:ref.id, ...payload});
       justAdded = ref.id;
     }
+    touchActivity();
   }catch(e){ console.error(e); alert("Could not save the book."); return; }
   resetForm(); render();
 }
@@ -275,7 +320,7 @@ async function deleteBook(id){
     await deleteDoc(doc(db,"books",id));
     books = books.filter(x=>x.id!==id);
     if(editingId===id) resetForm();
-    render();
+    touchActivity(); render();
   }catch(e){ console.error(e); alert("Could not delete."); }
 }
 
@@ -309,7 +354,7 @@ function render(){
   const pct=Math.min(100,Math.round(totalBooks/GOAL_BOOKS*100));
   $("goalText").textContent=`${totalBooks} of ${GOAL_BOOKS} books`;
   $("goalPct").textContent=pct+"%"; $("goalFill").style.width=pct+"%";
-  renderShelf(mine,accent); renderLog(mine,accent); prefillNumber();
+  renderShelf(mine,accent); renderLog(mine,accent); prefillNumber(); renderStamp();
   if(!$("fDate").value) $("fDate").value=new Date().toISOString().slice(0,10);
 }
 
@@ -339,7 +384,11 @@ function renderShelf(mine,accent){
     const sp=document.createElement("div");
     sp.className="spine"+(b.id===justAdded?" new":""); sp.style.height=h+"px"; sp.style.setProperty("--c",accent);
     sp.title=`#${b.book_number||"?"}  ${b.title}${b.author?" — "+b.author:""}\n${b.pages||"?"} pages${b.date_completed?" · "+fmtShort(b.date_completed):""}`;
+    sp.setAttribute("role","button"); sp.setAttribute("tabindex","0");
+    sp.setAttribute("aria-label",`${b.title}, book ${b.book_number||""} — view details`);
     sp.innerHTML=`<span>${escapeHtml(b.title)}</span>`;
+    sp.onclick=()=>openBookModal(b.id);
+    sp.onkeydown=(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openBookModal(b.id); } };
     shelf.appendChild(sp);
   });
   justAdded=null;
@@ -365,10 +414,58 @@ function renderLog(mine){
   body.querySelectorAll("[data-del]").forEach(el=>el.onclick=()=>deleteBook(el.dataset.del));
 }
 
+/* ---- spine details modal ---- */
+let modalBookId=null;
+function readerAccentFor(reader_id){ const i=readers.findIndex(r=>r.id===reader_id); return colorFor(Math.max(0,i)); }
+function openBookModal(id){
+  const b=books.find(x=>x.id===id); if(!b) return;
+  modalBookId=id;
+  $("bookModal").style.setProperty("--accent", readerAccentFor(b.reader_id));
+  $("mBadge").textContent = "#"+(b.book_number??"?");
+  $("mTitle").textContent = b.title||"Untitled";
+  $("mAuthor").textContent = b.author || "Author not noted";
+  $("mPages").textContent = b.pages ?? "—";
+  $("mDate").textContent = b.date_completed ? fmtShort(b.date_completed) : "—";
+  $("bookModal").hidden=false;
+  $("mClose").focus();
+}
+function closeBookModal(){ $("bookModal").hidden=true; modalBookId=null; }
+
 function fmtShort(d){ const [y,m,day]=d.split("-").map(Number); return new Date(y,m-1,day).toLocaleDateString(undefined,{month:"short",day:"numeric"}); }
 function escapeHtml(s){ return (s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
+// Capitalize the first letter of each word, leaving the rest as typed
+// (so correct inner caps like "DiCamillo" or "McKay" are preserved).
+function capWords(s){ return (s||"").replace(/(^|\s)(\p{L})/gu,(m,p,c)=>p+c.toUpperCase()); }
+
+// Shared "last changed by anyone" stamp
+async function touchActivity(){
+  lastEdited = Date.now();
+  renderStamp();
+  try{ await setDoc(doc(db,"meta","activity"), {last_edited:lastEdited}); }
+  catch(e){ console.error("activity stamp failed", e); }
+}
+function fmtStamp(ms){
+  const d=new Date(ms);
+  const mm=String(d.getMonth()+1).padStart(2,"0");
+  const dd=String(d.getDate()).padStart(2,"0");
+  const yy=String(d.getFullYear()).slice(-2);
+  return `(${mm}/${dd}/${yy})`;
+}
+function renderStamp(){
+  const el=$("lastEdit"); if(!el) return;
+  if(!lastEdited){ el.textContent=""; el.removeAttribute("title"); return; }
+  el.textContent=fmtStamp(lastEdited);
+  el.title="Last change by anyone: "+new Date(lastEdited).toLocaleString();
+}
+
 $("saveBtn").onclick=saveBook;
+["fTitle","fAuthor"].forEach(id=>$(id).addEventListener("blur",e=>{ e.target.value=capWords(e.target.value); }));
+$("mClose").onclick=closeBookModal;
+$("bookModal").onclick=(e)=>{ if(e.target.id==="bookModal") closeBookModal(); };
+$("mEdit").onclick=()=>{ const id=modalBookId; closeBookModal(); editBook(id); };
+$("mDel").onclick=()=>{ const id=modalBookId; closeBookModal(); deleteBook(id); };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && !$("bookModal").hidden) closeBookModal(); });
 $("cancelBtn").onclick=resetForm;
 $("fDate").value=new Date().toISOString().slice(0,10);
 ["fTitle","fAuthor","fPages","fNum"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")saveBook();}));
